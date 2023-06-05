@@ -20,7 +20,6 @@ https://robotframework.org/
 https://github.com/labjack/LabJackPython/blob/master/src/u3.py
 """
 
-from robot.version import get_version
 import u3
 
 __version__ = "0.0.0"
@@ -87,20 +86,35 @@ class LabJackU3:
             raise SystemError('No LabJack connection established!')
         return self._lab_jack
 
-    def open_device(self, local_id=None):
+    def open_device(self, local_id: int = None):
         """
         Open the first device found, or if local_id specified open it.
         To use local_id user should ensure multiple devices have had the correct id written outside of this library.
         Open Device  1
         """
         self.local_id = local_id
-        self.lab_jack.open(local_id=local_id)
+        self.lab_jack.open(localId=local_id)
         return True
 
-    def config_io(self, **kwargs):
-        return self.lab_jack.configIO(**kwargs)
+    def config_io(self, timer_counter_pin_offset: int = None, enable_counter_1: bool = None,
+                  enable_counter_0: bool = None, number_of_timers_enabled: int = None,
+                  fio_analog: int = None, eio_analog: int = None,
+                  enable_uart: int = None):
+
+        TimerCounterPinOffset = timer_counter_pin_offset
+        EnableCounter1 = enable_counter_1
+        EnableCounter0 = enable_counter_0
+        NumberOfTimersEnabled = number_of_timers_enabled
+        FIOAnalog = fio_analog
+        EIOAnalog = eio_analog
+        EnableUART = enable_uart
+        return self.lab_jack.configIO(TimerCounterPinOffset, EnableCounter1,
+                                      EnableCounter0, NumberOfTimersEnabled,
+                                      FIOAnalog, EIOAnalog,
+                                      EnableUART)
 
     def config_timer_clock(self, **kwargs):
+        # TODO expand or coerce arguments
         self.lab_jack.configTimerClock(**kwargs)
         return True
 
@@ -111,20 +125,20 @@ class LabJackU3:
         self.lab_jack.toggleLED()
         return True
 
-    def set_do(self, io_num, state=1):
+    def set_do(self, io_num: int, state: int = 1):
         """
         Sets direction to output and sets state
         """
         self.lab_jack.setDOState(ioNum=io_num, state=state)
         return True
 
-    def get_di(self, io_num):
+    def get_di(self, io_num: int):
         """
         Sets direction to input and reads input state
         """
         return self.lab_jack.getDIState(ioNum=io_num)
 
-    def get_dio(self, io_num):
+    def get_dio(self, io_num: int):
         """
         Gets state of input, but does not change direction
         """
@@ -136,41 +150,52 @@ class LabJackU3:
         """
         return self.lab_jack.getTemperature()
 
-    def get_analog_input(self, pos_channel):
+    def get_analog_input(self, pos_channel: int):
         return self.lab_jack.getAIN(pos_channel)
 
-    def config_analog(self, **kwargs):
-        self.lab_jack.configAnalog(**kwargs)
+    def config_analog(self, *args: int):
+        """
+        Make given IOs analog ones rather than digital
+        """
+        self.lab_jack.configAnalog(*args)
         return True
 
-    def config_digital(self, **kwargs):
-        self.lab_jack.configDigital(**kwargs)
+    def config_digital(self, *args: int):
+        """
+        Make given IOs digital ones rather than analog
+        """
+        self.lab_jack.configDigital(*args)
         return True
 
-    def verify_bound_analog_input(self, pos_channel, minimum=None, maximum=None, msg="Analog Input Verify Failed"):
+    def verify_bound_analog_input(self, pos_channel: int, minimum: float = None, maximum: float = None,
+                                  msg="Analog Input Verify Failed"):
         analog = self.lab_jack.getAIN(pos_channel)
         if minimum and (analog < minimum):
-            raise AssertionError(f"{msg}: {analog} < {minimum}")
+            raise Exception(f"{msg}: value {analog} < minimum {minimum}")
         if maximum and (analog > maximum):
-            raise AssertionError(f"{msg}: {analog} > {maximum}")
+            raise Exception(f"{msg}: value {analog} > maximum {maximum}")
         return analog
 
-    def set_and_verify_digital_input(self, io_num, expect=None, msg="Digital Input Value Invalid"):
+    def verify_digital_input(self, io_num: int, expect: int = None, msg="Digital Input Value Invalid"):
         digital_input = self.lab_jack.getDIState(io_num)
         if expect and (expect != digital_input):
-            raise AssertionError(f"{msg}: {digital_input} != {expect}")
+            raise Exception(f"{msg}: input {digital_input} != expected {expect}")
         return digital_input
 
     def get_counter0(self, **kwargs):
+        # TODO expand or coerce arguments
         return self.lab_jack.getFeedback(u3.Counter0(**kwargs))
 
     def get_counter1(self, **kwargs):
+        # TODO expand or coerce arguments
         return self.lab_jack.getFeedback(u3.Counter1(**kwargs))
 
     def get_timer0(self, **kwargs):
+        # TODO expand or coerce arguments
         return self.lab_jack.getFeedback(u3.Timer0(**kwargs))
 
     def get_timer1(self, **kwargs):
+        # TODO expand or coerce arguments
         return self.lab_jack.getFeedback(u3.Timer1(**kwargs))
 
     def config_timer0(self, **kwargs):
