@@ -207,4 +207,21 @@ class LabJackU3:
         self.lab_jack.getFeedback(u3.Timer1Config(**kwargs))
         return True
 
+    def set_dac(self, dac_num: int, volts: float, bits: int = 16):
+        """
+        Set dac value for dac_num dac with 8 or 16 (default) bit mode
+        Use the voltageToDACBits to calculate value to send to driver.
+        For reference from datasheet section 2.7 DAC.
+        Bits = (Slope * Volts) + Offset
+        The calibration constants are still aligned to 8-bits, however, so the slope and offset should each be
+        multiplied by 256 before using in the above formula.
+        """
+        if bits == 8:
+            value = self.lab_jack.voltageToDACBits(volts, dac_num, is16Bits=False)
+            dac = u3.DAC8(Dac=dac_num, Value=value)
+        else:
+            value = self.lab_jack.voltageToDACBits(volts, dac_num, is16Bits=True)
+            dac = u3.DAC16(Dac=dac_num, Value=value)
+        self.lab_jack.getFeedback(dac)
+
     # TODO advanced timers
