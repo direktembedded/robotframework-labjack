@@ -96,6 +96,9 @@ class LabJackU3:
         self.lab_jack.open(localId=local_id)
         return True
 
+    def close_device(self):
+        self.lab_jack.close()
+
     def config_io(self, timer_counter_pin_offset: int = None, enable_counter_1: bool = None,
                   enable_counter_0: bool = None, number_of_timers_enabled: int = None,
                   fio_analog: int = None, eio_analog: int = None,
@@ -151,6 +154,9 @@ class LabJackU3:
         return self.lab_jack.getTemperature()
 
     def get_analog_input(self, pos_channel: int):
+        """
+        Returns single input analog value
+        """
         return self.lab_jack.getAIN(pos_channel)
 
     def config_analog(self, *args: int):
