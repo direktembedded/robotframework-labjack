@@ -11,7 +11,7 @@ Verify Digital Output 1
 Verify Digital Input 1
    Set Do             4  1
 
-Verify Digital Output
+Verify Analog Output
    Set Dac            0  2.0
 
 *** Keywords ***
@@ -20,10 +20,12 @@ Delay Toggle Led
     Sleep  2
 
 Open U3 And Configure
+    Documentation    Open only LabJack device found and set all I/O analog, then individually set digitals
     Open Device
     Config Io        fio_analog=0b11111111   # set all to analog before trying config digital
     Config Digital   4  6
 
 Open U3 And Configure Alternate
+    Documentation    Open only LabJack device found and set all I/O to correct state in one call
     Open Device
     Config Io        fio_analog=0b10101111   # set bit pattern to define 4 and 6 as digital, but less readable
