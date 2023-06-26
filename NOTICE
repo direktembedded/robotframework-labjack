@@ -1,0 +1,8 @@
+This software utilises LabJackLibrary, Copyright © 2023- Direkt Embedded Pty Ltd, a library for
+Robot Framework (https://github.com/robotframework/robotframework/blob/v6.1/COPYRIGHT.txt)
+from Robot Framework Foundation (https://robotframework.org/) which wraps the
+LabJackPython library (https://github.com/labjack/LabJackPython/blob/master/LICENSE)
+from LabJack Corporation
+
+Copyright © 2023- Direkt Embedded Pty Ltd
+https://www.direktembedded.com
