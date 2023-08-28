@@ -1,0 +1,4 @@
+RobotLabJack Library wraps LabJackPython library (https://github.com/labjack/LabJackPython/blob/master/LICENSE)
+from LabJack Corporation
+to provide a library for Robot Framework (https://github.com/robotframework/robotframework/blob/v6.1/COPYRIGHT.txt)
+from Robot Framework Foundation (https://robotframework.org/)
