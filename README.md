@@ -7,4 +7,5 @@ from [Robot Framework Foundation](https://robotframework.org/) and wraps
 from [LabJack Corporation](https://labjack.com/).
 
 Copyright &copy; 2023- Direkt Embedded Pty Ltd
-https://www.direktembedded.com
+
+[https://www.direktembedded.com](https://www.direktembedded.com)
