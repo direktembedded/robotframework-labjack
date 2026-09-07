@@ -34,10 +34,9 @@ def isVersionClean(version):
 
 
 def package():
-    import subprocess
+    from build.__main__ import main
     print("VERSION file matches git version, running setup to package")
-    pr = subprocess.run(["python3", "-m build"])
-    return pr.returncode
+    main(["--sdist", "--wheel"])
 
 
 if __name__ == "__main__":
